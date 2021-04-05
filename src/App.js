@@ -1,24 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import axios from 'axios';
+import NavBar from './Components/NavBar/NavBar';
+import Content from './Components/Content/Content';
+import Loader from './Components/Loader/Loader';
 
 function App() {
+
+
+//----state-----
+
+const [data, setData] = useState([]);
+const [query, setQuery] = useState('');
+const [loading, setLoading] =useState(false);
+const [showPagination, setShowPagination] = useState(false);
+
+//Api call
+
+const actualCall = async () => {
+  try {
+    setLoading(true);
+    const result = await axios(`https://forkify-api.herokuapp.com/api/search?q=${query}`);
+    setData(result.data.recipes);
+    setLoading(false);
+    setShowPagination(true);
+    cleanHandler();
+  } catch (error) {
+      console.log(error);
+}
+}
+
+//Content Clear Button
+
+const contentClear = () => {
+  setData([]);
+  setShowPagination(false);
+}
+
+//Search field clear func
+
+const cleanHandler = () => {
+  setQuery('');
+  
+}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+        <NavBar actualCall={actualCall} setQuery={setQuery} query={query} contentClear={contentClear}/>
+        {loading && <Loader />}
+        <Content data={data} showPagination={showPagination}/>
+    </>
   );
 }
 
