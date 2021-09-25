@@ -3,7 +3,7 @@ import axios from "axios";
 import NavBar from "./Components/NavBar/NavBar";
 import Content from "./Components/Content/Content";
 import Loader from "./Components/Loader/Loader";
-import env from "react-dotenv";
+
 function App() {
   //----state-----
 
@@ -17,7 +17,8 @@ function App() {
   const actualCall = async () => {
     try {
       setLoading(true);
-      const result = await axios(`${env.REACT_APP_API_URL}${query}`);
+
+      const result = await axios(`${process.env.REACT_APP_API_URL}${query}`);
       setData(result.data.recipes);
       setLoading(false);
       setShowPagination(true);
@@ -50,6 +51,9 @@ function App() {
       />
       {loading && <Loader />}
       <Content data={data} showPagination={showPagination} />
+      {process.env.NODE_ENV === "development"
+        ? process.env.REACT_APP_DEV_MODE
+        : process.env.REACT_APP_PRO_MODE}
     </>
   );
 }
