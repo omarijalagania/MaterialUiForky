@@ -17,7 +17,7 @@ function App() {
   const actualCall = async () => {
     try {
       setLoading(true);
-      const result = await axios(`${window.env.REACT_APP_API_URL}${query}`);
+      const result = await axios(`${env.REACT_APP_API_URL}${query}`);
       setData(result.data.recipes);
       setLoading(false);
       setShowPagination(true);
