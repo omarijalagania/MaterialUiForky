@@ -1,53 +1,55 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import NavBar from './Components/NavBar/NavBar';
-import Content from './Components/Content/Content';
-import Loader from './Components/Loader/Loader';
-
+import React, { useState } from "react";
+import axios from "axios";
+import NavBar from "./Components/NavBar/NavBar";
+import Content from "./Components/Content/Content";
+import Loader from "./Components/Loader/Loader";
+require("dotenv").config();
 function App() {
+  //----state-----
 
+  const [data, setData] = useState([]);
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showPagination, setShowPagination] = useState(false);
 
-//----state-----
+  //Api call
 
-const [data, setData] = useState([]);
-const [query, setQuery] = useState('');
-const [loading, setLoading] =useState(false);
-const [showPagination, setShowPagination] = useState(false);
-
-//Api call
-
-const actualCall = async () => {
-  try {
-    setLoading(true);
-    const result = await axios(`https://forkify-api.herokuapp.com/api/search?q=${query}`);
-    setData(result.data.recipes);
-    setLoading(false);
-    setShowPagination(true);
-    cleanHandler();
-  } catch (error) {
+  const actualCall = async () => {
+    try {
+      setLoading(true);
+      const result = await axios(`${process.env.REACT_APP_API_URL}${query}`);
+      setData(result.data.recipes);
+      setLoading(false);
+      setShowPagination(true);
+      cleanHandler();
+    } catch (error) {
       console.log(error);
-}
-}
+    }
+  };
 
-//Content Clear Button
+  //Content Clear Button
 
-const contentClear = () => {
-  setData([]);
-  setShowPagination(false);
-}
+  const contentClear = () => {
+    setData([]);
+    setShowPagination(false);
+  };
 
-//Search field clear func
+  //Search field clear func
 
-const cleanHandler = () => {
-  setQuery('');
-  
-}
+  const cleanHandler = () => {
+    setQuery("");
+  };
 
   return (
     <>
-        <NavBar actualCall={actualCall} setQuery={setQuery} query={query} contentClear={contentClear}/>
-        {loading && <Loader />}
-        <Content data={data} showPagination={showPagination}/>
+      <NavBar
+        actualCall={actualCall}
+        setQuery={setQuery}
+        query={query}
+        contentClear={contentClear}
+      />
+      {loading && <Loader />}
+      <Content data={data} showPagination={showPagination} />
     </>
   );
 }
