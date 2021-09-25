@@ -3,7 +3,7 @@ import axios from "axios";
 import NavBar from "./Components/NavBar/NavBar";
 import Content from "./Components/Content/Content";
 import Loader from "./Components/Loader/Loader";
-require("dotenv").config();
+
 function App() {
   //----state-----
 
