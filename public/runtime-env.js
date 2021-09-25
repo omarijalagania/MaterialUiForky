@@ -1,0 +1,1 @@
+window.__RUNTIME_CONFIG__ = {"NODE_ENV":"development","REACT_APP_API_URL":"https://forkify-api.herokuapp.com/api/search?q="};
