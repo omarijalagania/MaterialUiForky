@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import SingleCard from "./SingleCard/SingleCard";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -49,13 +50,20 @@ const useStyle = makeStyles(() => ({
   },
 }));
 
-function Content({ data, showPagination }) {
+//Pagination settings
+function Content() {
   const [pageNumber, setPageNumber] = useState(0);
   const recipePerPage = 9;
   const pageVisited = pageNumber * recipePerPage;
 
+  const data = useSelector((state) => state.getData.result); //pull state from global store
+  const showPagination = useSelector(
+    (state) => state.paginationSet.showPagination
+  );
+
   //pagination page count
   const pageCount = Math.ceil(data.length / recipePerPage);
+
   //pagination function
   const changePage = ({ selected }) => {
     setPageNumber(selected);
