@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import SearchIcon from "@material-ui/icons/Search";
@@ -8,33 +8,39 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 
-import { useSelector, useDispatch } from "react-redux";
-import { queryAction } from "../../redux/actions";
+import axios from "axios";
 
-const useStyles = makeStyles(() => ({
-  ContWrap: {
-    position: "relative",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  search: {
-    display: "flex",
-    alignItems: "center",
-    position: "absolute",
-    right: -15,
-    cursor: "pointer",
-  },
-  input: {
-    marginRight: 10,
-    marginLeft: 10,
-  },
-}));
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  dataGet,
+  loadingAction,
+  queryAction,
+  paginationAction,
+} from "../../redux/actions";
 
 function NavBar({ actualCall, contentClear }) {
   const classes = useStyles();
   const query = useSelector((state) => state.getQuery.query);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    //Api call
+    const actualCall = async () => {
+      try {
+        dispatch(loadingAction(true));
+        const response = await axios(
+          `https://forkify-api.herokuapp.com/api/search?q=pizza`
+        );
+        dispatch(dataGet(response.data.recipes));
+        dispatch(loadingAction(false));
+        dispatch(paginationAction(true));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    actualCall();
+  }, [dispatch]);
 
   return (
     <>
@@ -42,7 +48,7 @@ function NavBar({ actualCall, contentClear }) {
         <Toolbar>
           <Container className={classes.ContWrap}>
             <Typography>
-              <Button onClick={contentClear}>Forkify</Button>
+              <Button>Forkify</Button>
             </Typography>
             <form
               onSubmit={(e) => {
@@ -67,5 +73,25 @@ function NavBar({ actualCall, contentClear }) {
     </>
   );
 }
+
+const useStyles = makeStyles(() => ({
+  ContWrap: {
+    position: "relative",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  search: {
+    display: "flex",
+    alignItems: "center",
+    position: "absolute",
+    right: -15,
+    cursor: "pointer",
+  },
+  input: {
+    marginRight: 10,
+    marginLeft: 10,
+  },
+}));
 
 export default NavBar;

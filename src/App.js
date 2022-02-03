@@ -10,6 +10,7 @@ import {
   queryAction,
   paginationAction,
 } from "./redux/actions";
+import Banner from "./Components/Banner/Banner";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,6 +50,7 @@ function App() {
 
   return (
     <>
+      <Banner />
       <NavBar actualCall={actualCall} contentClear={contentClear} />
       {loadingData && <Loader />}
       <Content />

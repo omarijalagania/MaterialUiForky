@@ -1,0 +1,18 @@
+.banner {
+  color: #fff;
+  object-fit: contain;
+  height: 448px;
+  position: relative;
+}
+
+.banner__content {
+  position: absolute;
+  bottom: -40%;
+  left: 5rem;
+  /* height: 190px; */
+  height: 380px;
+}
+
+.banner__title {
+  font-weight: 700;
+}

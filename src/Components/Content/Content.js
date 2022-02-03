@@ -8,7 +8,7 @@ import ReactPaginate from "react-paginate";
 
 const useStyle = makeStyles(() => ({
   gridCont: {
-    marginTop: 120,
+    marginTop: 50,
   },
   paginationContainer: {
     Width: "100%",
